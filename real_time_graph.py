@@ -1,4 +1,10 @@
+"""
+Real time graphic window
+"""
+
 import pygame
+
+from ref import *
 
 # SETUP PYGAME
 pygame.init()
@@ -79,15 +85,44 @@ class Cursor:
             self.points.append([abs(self.points_x), abs(self.points_y)])
 
 
-# KEY
-class Key:
+# WINDOW
+class Window:
 
     # Constructor
-    def __init__(self, name):
-        self.name = name
-        self.percentage = 1
-        self.touch = 0
+    def __init__(self, w, h, display):
+        # Window
+        self.window = pygame.Surface((w, h))
+        self.rect = pygame.rect.Rect(0, 0, w, h)
 
-    def touched(self, key_touched):
-        self.touch += 1
-        self.percentage = abs((self.touch / key_touched) * 100)
+        # Points
+        self.points = []
+        self.cursor = Cursor((display.get_width() / 2) - 8, display.get_height() - 100)
+
+    # Update the real time graphic window
+    def update(self, key_press, clock):
+        # Key pressed
+        if key_press[0]:
+            self.cursor.key_touched(key_press[1])
+        # Points
+        if clock % 10 == 0:
+            self.points.append(Point(self.cursor.rect.x, self.cursor.rect.y))
+
+        # Cursor
+        self.cursor.update(clock)
+
+        # Blit on display
+        self.window.fill((0, 0, 0))
+        # Points
+        for i in range(len(self.points)):
+            point = self.points[i]
+            if i > 0:
+                last_point = self.points[i - 1]
+                pygame.draw.line(self.window, (255, 255, 255), (point.rect.x, point.rect.y),
+                                 (last_point.rect.x, last_point.rect.y))
+            point.update(clock)
+            self.window.blit(point.surf, point.rect)
+        # Cursor
+        self.window.blit(self.cursor.surf, self.cursor.rect)
+        pygame.draw.ellipse(self.window, DARK_BLUE, self.cursor.rect_border, self.cursor.rect_border.width)
+        pygame.draw.ellipse(self.window, BLUE, self.cursor.rect, self.cursor.rect.width)
+
