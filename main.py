@@ -29,10 +29,11 @@ import pygame
 import csv
 
 import real_time_graph
+import Two_dimensional_graph
 
 # SETUP PYGAME
 pygame.init()
-display = pygame.display.set_mode((500, 500), pygame.RESIZABLE)
+display = pygame.display.set_mode((1024, 640), pygame.RESIZABLE)
 
 # CSV FILE
 filename = "points.csv"
@@ -71,7 +72,10 @@ def main():
     keys = []
 
     # Windows
-    real_time_graph_window = real_time_graph.Window(display.get_width(), display.get_height(), display)
+    real_time_graph_window = real_time_graph.Window(display.get_width(), display.get_height())
+    points = real_time_graph_window.cursor.points
+
+    two_dimensional_graph_window = Two_dimensional_graph.Window(display.get_width(), display.get_height())
 
     while not escape:
         # Background
@@ -101,9 +105,11 @@ def main():
 
         # Windows
         real_time_graph_window.update(key_press, game_clock)
+        two_dimensional_graph_window.update(points, game_clock)
 
         # Display
         display.blit(real_time_graph_window.window, real_time_graph_window.rect)
+        display.blit(two_dimensional_graph_window.window, two_dimensional_graph_window.rect)
         pygame.display.update()
 
         # Clock
@@ -112,9 +118,9 @@ def main():
         # Key pressed
         key_press = [False, 0]
 
-    with open(filename, "r+", newline='') as csvfile:
-        point_writer = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        for point in cursor.points:
+    with open(filename, "r+", newline='') as csv_file:
+        point_writer = csv.writer(csv_file, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        for point in points:
             line = str(point[0]) + "/" + str(point[1])
             point_writer.writerow(line)
 

@@ -8,7 +8,6 @@ from ref import *
 
 # SETUP PYGAME
 pygame.init()
-display = pygame.display.set_mode((500, 500), pygame.RESIZABLE)
 
 
 # POINTS
@@ -58,14 +57,15 @@ class Cursor:
 
         # Rectangle
         self.rect = pygame.rect.Rect(self.x_pos, self.y_pos, 16, 16)
-        self.rect_border = pygame.rect.Rect(self.x_pos - 4, self.y_pos - 4, 24, 24)
+        self.rect_border = pygame.rect.Rect(self.x_pos, self.y_pos, 24, 24)
 
     # Get the value of the key pressed
     def key_touched(self, key):
-        self.y_pos_goal = self.y_pos - (key.percentage * 3)
+        self.y_pos_goal = self.y_pos - (key.percentage * 2)
 
     # Updating the point
     def update(self, clock):
+        self.surf.fill(GREY_BG)
         # Clock
         self.clock += 1
         # Updating y position
@@ -81,7 +81,7 @@ class Cursor:
         # Updating points
         if clock % 10 == 0:
             self.points_x += 1
-            self.points_y = 400 - self.y_pos
+            self.points_y = 300 - self.y_pos
             self.points.append([abs(self.points_x), abs(self.points_y)])
 
 
@@ -89,14 +89,16 @@ class Cursor:
 class Window:
 
     # Constructor
-    def __init__(self, w, h, display):
+    def __init__(self, display_width, display_height):
         # Window
-        self.window = pygame.Surface((w, h))
-        self.rect = pygame.rect.Rect(0, 0, w, h)
+        self.WIDTH = 300
+        self.HEIGHT = 400
+        self.window = pygame.Surface((self.WIDTH, self.HEIGHT))
+        self.rect = pygame.rect.Rect((display_width / 2) - (self.WIDTH / 2), display_height / 10, self.WIDTH, self.HEIGHT)
 
         # Points
         self.points = []
-        self.cursor = Cursor((display.get_width() / 2) - 8, display.get_height() - 100)
+        self.cursor = Cursor((self.WIDTH / 2) - 8, self.HEIGHT - 100)
 
     # Update the real time graphic window
     def update(self, key_press, clock):
@@ -110,8 +112,10 @@ class Window:
         # Cursor
         self.cursor.update(clock)
 
-        # Blit on display
-        self.window.fill((0, 0, 0))
+        # BG
+        self.window.fill(WHITE)
+        pygame.draw.rect(self.window, GREY_BG, pygame.rect.Rect(3, 3, self.WIDTH - 6, self.HEIGHT - 6))
+
         # Points
         for i in range(len(self.points)):
             point = self.points[i]
@@ -125,4 +129,3 @@ class Window:
         self.window.blit(self.cursor.surf, self.cursor.rect)
         pygame.draw.ellipse(self.window, DARK_BLUE, self.cursor.rect_border, self.cursor.rect_border.width)
         pygame.draw.ellipse(self.window, BLUE, self.cursor.rect, self.cursor.rect.width)
-
