@@ -105,7 +105,7 @@ def main():
 
         # Windows
         real_time_graph_window.update(key_press, game_clock)
-        two_dimensional_graph_window.update(points, game_clock)
+        two_dimensional_graph_window.update(points)
 
         # Display
         display.blit(real_time_graph_window.window, real_time_graph_window.rect)
@@ -114,6 +114,8 @@ def main():
 
         # Clock
         game_clock += 1
+        if game_clock == 1:
+            points.remove(points[0])
 
         # Key pressed
         key_press = [False, 0]
