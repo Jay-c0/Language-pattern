@@ -10,6 +10,7 @@ from ref import *
 pygame.init()
 
 
+# GRAPHIC
 class Graph:
 
     def __init__(self):

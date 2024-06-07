@@ -30,6 +30,7 @@ import csv
 
 import real_time_graph
 import Two_dimensional_graph
+import Text_window
 
 # SETUP PYGAME
 pygame.init()
@@ -77,6 +78,8 @@ def main():
 
     two_dimensional_graph_window = Two_dimensional_graph.Window(display.get_width(), display.get_height())
 
+    text_window = Text_window.Window(display.get_width(), display.get_height())
+
     while not escape:
         # Background
         display.fill((0, 0, 0))
@@ -89,27 +92,30 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     escape = True
                 else:
-                    key_touched += 1
-                    key_find = 0
-                    key_pressed = 0
-                    for key in keys:
-                        if key.name == event.key:
-                            key_pressed = key
-                            key.touched(key_touched)
-                            key_find = 1
-                    if key_find == 0:
-                        key_pressed = Key(event.key)
-                        key_pressed.touched(key_touched)
-                        keys.append(key_pressed)
-                    key_press = [True, key_pressed]
+                    if event.key in range(255):
+                        key_touched += 1
+                        key_find = 0
+                        key_pressed = 0
+                        for key in keys:
+                            if key.name == event.key:
+                                key_pressed = key
+                                key.touched(key_touched)
+                                key_find = 1
+                        if key_find == 0:
+                            key_pressed = Key(event.key)
+                            key_pressed.touched(key_touched)
+                            keys.append(key_pressed)
+                        key_press = [True, key_pressed]
 
         # Windows
         real_time_graph_window.update(key_press, game_clock)
         two_dimensional_graph_window.update(points)
+        text_window.update(key_press)
 
         # Display
         display.blit(real_time_graph_window.window, real_time_graph_window.rect)
         display.blit(two_dimensional_graph_window.window, two_dimensional_graph_window.rect)
+        display.blit(text_window.window, text_window.rect)
         pygame.display.update()
 
         # Clock
