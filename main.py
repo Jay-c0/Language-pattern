@@ -78,7 +78,7 @@ def main():
 
     two_dimensional_graph_window = Two_dimensional_graph.Window(display.get_width(), display.get_height())
 
-    text_window = Text_window.Window(display.get_width(), display.get_height())
+    text_window = Text_window.Window(display.get_width(), display.get_height(), 0)
 
     while not escape:
         # Background
@@ -111,6 +111,8 @@ def main():
         real_time_graph_window.update(key_press, game_clock)
         two_dimensional_graph_window.update(points)
         text_window.update(key_press)
+        if text_window.quit:
+            text_window = Text_window.Window(display.get_width(), display.get_height(), text_window.text_num + 1)
 
         # Display
         display.blit(real_time_graph_window.window, real_time_graph_window.rect)

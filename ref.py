@@ -8,5 +8,5 @@ DARK_BLUE = (0, 15, 112)
 RED = (152, 0, 0)
 
 # TEXT
-texts = ["Je_suis_un_programmeur.", "Allo_Maman."]
+TEXTS = ["Je_suis_un_programmeur.", "Allo_Maman."]
 
