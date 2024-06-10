@@ -38,8 +38,6 @@ class Cursor:
 
     # Constructor
     def __init__(self, x, y):
-        # Clock
-        self.clock = 0
         # Surface
         self.surf = pygame.Surface((16, 16))
         self.surf.fill((0, 0, 0))
@@ -66,15 +64,13 @@ class Cursor:
     # Updating the point
     def update(self, clock):
         self.surf.fill(GREY_BG)
-        # Clock
-        self.clock += 1
         # Updating y position
         if self.y_pos > self.y_pos_goal and self.y_pos > 100:
             self.y_pos -= 2
         else:
-            if self.y_pos < self.INIT_POS:
-                self.y_pos += 3
-                self.y_pos_goal += 2
+            if self.y_pos < self.INIT_POS and clock % 3 == 0:
+                self.y_pos += 1
+                self.y_pos_goal += 1
         # Updating rect
         self.rect = pygame.rect.Rect(self.x_pos, self.y_pos, 16, 16)
         self.rect_border = pygame.rect.Rect(self.x_pos - 4, self.y_pos - 4, 24, 24)

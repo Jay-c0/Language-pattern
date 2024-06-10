@@ -26,7 +26,8 @@ class Window:
         self.font = pygame.font.SysFont('Courier new', 30)
 
         # Text
-        self.text_num = text_num
+        if text_num == len(TEXTS): self.text_num = 0
+        else: self.text_num = text_num
         self.text = TEXTS[self.text_num]
         self.text_alpha = 0
 
@@ -52,15 +53,14 @@ class Window:
                 self.letter_dict.update({i: k})
         
         # Variables
-        self.clock = 0
         self.done = False
         self.quit = False
 
     # Render the text and the cursor
     def render_text(self):
-        if not self.done and self.text_alpha < 256 and self.clock % 4 == 0:
+        if not self.done and self.text_alpha < 256:
             self.text_alpha += 1
-        elif self.done and self.clock % 4 == 0:
+        elif self.done:
             self.text_alpha -= 1
             if self.text_alpha == -1:
                 self.quit = True
@@ -109,7 +109,6 @@ class Window:
             txt_surf.set_alpha(self.text_alpha)
             x_pos += txt_letter.get_width() + 5
 
-        print(letter_typed, len(self.text))
         if letter_typed == len(self.text):
             self.done = True
 
@@ -118,12 +117,9 @@ class Window:
 
     # Update the text window
     def update(self, key_press):
-        # Clock
-        self.clock += 1
         # BG
         self.window.fill(WHITE)
         pygame.draw.rect(self.window, GREY_BG, pygame.rect.Rect(3, 3, self.WIDTH - 6, self.HEIGHT - 6))
-
         # Text
         self.render_text()
 
