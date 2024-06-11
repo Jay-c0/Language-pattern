@@ -27,7 +27,7 @@ class Graph:
         self.X_POS = self.WIDTH / 10
         self.Z_POS = self.WIDTH - (self.WIDTH / 10)
         self.ZERO_POS = (self.WIDTH / 2, self.Y_POS - (((self.WIDTH / 2) - self.X_POS) * m.tan(m.radians(30))))
-
+        self.points_3d = []
 
         # Font
         self.font = pygame.font.SysFont('Courier new', 15)
@@ -55,16 +55,15 @@ class Graph:
             y_pos = self.ZERO_POS[1]
 
             point = points[i]
-            y = point[1] / 30
+            y = point[1] / 20
+            print(y)
             a = 4
             if i > 0:
-                x = y * (y - 1)
+                x = y  ** 2
                 z = (a * y ** 2) - y
             else:
-                point_surf.fill(RED)
                 x = y
                 z = x
-            print(x)
 
             x_3d_pos = get_x(x)
             z_3d_pos = get_z(z)
@@ -74,10 +73,6 @@ class Graph:
             y_pos += y_3d_pos
 
             self.window.blit(point_surf, (x_pos, y_pos))
-
-
-
-
 
 
 # WINDOW
