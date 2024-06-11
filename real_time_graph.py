@@ -68,7 +68,7 @@ class Cursor:
         if self.y_pos > self.y_pos_goal and self.y_pos > 100:
             self.y_pos -= 2
         else:
-            if self.y_pos < self.INIT_POS and clock % 3 == 0:
+            if self.y_pos < self.INIT_POS and clock % 2 == 0:
                 self.y_pos += 1
                 self.y_pos_goal += 1
         # Updating rect

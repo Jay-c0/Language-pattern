@@ -30,6 +30,7 @@ import csv
 
 import real_time_graph
 import Two_dimensional_graph
+import Three_dimensional_graph
 import Text_window
 
 # SETUP PYGAME
@@ -78,6 +79,8 @@ def main():
 
     two_dimensional_graph_window = Two_dimensional_graph.Window(display.get_width(), display.get_height())
 
+    three_dimensional_graph_window = Three_dimensional_graph.Window(display.get_width(), display.get_height())
+
     text_window = Text_window.Window(display.get_width(), display.get_height(), 0)
 
     while not escape:
@@ -110,6 +113,7 @@ def main():
         # Windows
         real_time_graph_window.update(key_press, game_clock)
         two_dimensional_graph_window.update(points)
+        three_dimensional_graph_window.update(points)
         text_window.update(key_press)
         if text_window.quit:
             text_window = Text_window.Window(display.get_width(), display.get_height(), text_window.text_num + 1)
@@ -117,6 +121,7 @@ def main():
         # Display
         display.blit(real_time_graph_window.window, real_time_graph_window.rect)
         display.blit(two_dimensional_graph_window.window, two_dimensional_graph_window.rect)
+        display.blit(three_dimensional_graph_window.window, three_dimensional_graph_window.rect)
         display.blit(text_window.window, text_window.rect)
         pygame.display.update()
 
